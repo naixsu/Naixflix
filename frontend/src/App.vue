@@ -5,26 +5,43 @@
         />
 
         <main class="main">
-            movies
-            {{ movies }}
             <MovieRow
-                title="Popular on Netflix"
-                :movies="popular"
+                title="Movies"
+                :movies="movies"
             />
-            <!-- <MovieRow
-                title="Trending Now"
-                :movies="trending"
-            /> -->
         </main>
     </div>
 </template>
 
 <script setup>
+    // Imports
+    import axios from 'axios';
+    import { ref, onMounted } from 'vue';
     import AppHeader from './components/AppHeader.vue';
     import MovieRow from './components/MovieRow.vue';
-    import axios from 'axios';
 
-    const popular = Array.from({ length: 20 }, (_, i) => `HD ${i + 1}`);
+    // Data
+    const isFetching = ref(false);
+    const movies = ref([]);
+
+    // onMounted
+    onMounted(async () => {
+        fetchMovies();
+    })
+
+    // Async functions
+    async function fetchMovies() {
+        isFetching.value = true;
+
+        try {
+            const response = await axios.get("http://localhost:8000/api/movies");
+            movies.value = response.data;
+        } catch (error) {
+            console.error('Error fetching movies:', error);
+        } finally {
+            isFetching.value = false;
+        }
+    }
 
     async function handleAddNewMovie(data) {
         try {
@@ -40,6 +57,8 @@
             });
         } catch (error) {
             console.error('Failed to add new movie:', error.response?.data || error.message);
+        } finally {
+            await fetchMovies();
         }
     }
 </script>

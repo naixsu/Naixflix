@@ -1,20 +1,20 @@
 <template>
     <div class="movie-card">
         <div class="poster">
-            {{ label }}
+            {{ movie.title }}
         </div>
     </div>
 </template>
 
 <script setup>
-import { defineProps } from 'vue';
+    import { defineProps } from 'vue';
 
-defineProps({
-    label: {
-        type: String,
-        required: true,
-    },
-});
+    defineProps({
+        movie: {
+            type: Object,
+            required: true,
+        },
+    });
 </script>
 
 <style scoped>

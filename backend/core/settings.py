@@ -28,6 +28,13 @@ DEBUG = True
 ALLOWED_HOSTS = []
 
 # Configure media settings in Django to support file uploads
+"""
+TODO:
+Limitation:
+- Django does not store actual files directly in the database. It only stores the path to the file (e.g., videos/myvideo.mp4) in the database, while the actual video file is stored on the filesystem (like /media/videos/myvideo.mp4)
+- Have to use `BinaryField` which is not recommended apparently as it bloats the database.
+"""
+
 import os
 MEDIA_URL = '/media/'
 MEDIA_ROOT = os.path.join(BASE_DIR, 'media')

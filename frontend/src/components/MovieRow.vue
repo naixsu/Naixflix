@@ -3,24 +3,26 @@
         <h2>{{ title }}</h2>
         <div class="scroll-wrapper">
             <button
+                v-if="showScroll"
                 class="scroll-btn left"
-                @click="scrollLeft">
+                @click="scrollLeft"
+            >
                 &#10094;
             </button>
-            <div
-                class="movie-row"
-                ref="row"
-            >
+
+            <div class="movie-row" ref="row">
                 <MovieCard
-                    v-for="(label, i) in movies"
+                    v-for="(movie, i) in movies"
                     :key="i"
-                    :label="label"
+                    :movie="movie"
                 />
             </div>
+
             <button
+                v-if="showScroll"
                 class="scroll-btn right"
                 @click="scrollRight"
-                >
+            >
                 &#10095;
             </button>
         </div>
@@ -28,7 +30,7 @@
 </template>
 
 <script setup>
-    import { ref, defineProps } from 'vue';
+    import { ref, defineProps, onMounted, onUpdated } from 'vue';
     import MovieCard from './MovieCard.vue';
 
     defineProps({
@@ -37,6 +39,7 @@
     });
 
     const row = ref(null);
+    const showScroll = ref(false);
     const CARD_WIDTH = 160;
 
     const scrollLeft = () => {
@@ -46,6 +49,17 @@
     const scrollRight = () => {
         row.value.scrollBy({ left: CARD_WIDTH * 3, behavior: 'smooth' });
     };
+
+    // Check if content overflows
+    const checkOverflow = () => {
+        const el = row.value;
+        if (el) {
+            showScroll.value = el.scrollWidth > el.clientWidth;
+        }
+    };
+
+    onMounted(checkOverflow);
+    onUpdated(checkOverflow);
 </script>
 
 <style scoped>
