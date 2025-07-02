@@ -148,21 +148,49 @@
     }
 </script>
 
-<style scoped>
+<style>
+    /* Global Reset (not scoped) */
     html,
     body,
-    #app,
-    .app {
+    #app {
         height: 100%;
         width: 100%;
         margin: 0;
         padding: 0;
-    }
-
-    .app {
         background-color: #141414;
         color: #fff;
         font-family: Arial, sans-serif;
+        overflow-x: hidden;
+    }
+
+    ::-webkit-scrollbar {
+        width: 10px;
+    }
+
+    ::-webkit-scrollbar-track {
+        background: #1c1c1c;
+    }
+
+    ::-webkit-scrollbar-thumb {
+        background-color: #555;
+        border-radius: 6px;
+        border: 2px solid #1c1c1c;
+    }
+
+    ::-webkit-scrollbar-thumb:hover {
+        background-color: #777;
+    }
+
+    /* Firefox */
+    * {
+        scrollbar-width: thin;
+        scrollbar-color: #555 #1c1c1c;
+    }
+</style>
+
+<style scoped>
+    /* Component-specific styles */
+    .app {
         display: flex;
         flex-direction: column;
         min-height: 100vh;
