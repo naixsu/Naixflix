@@ -1,53 +1,3 @@
-<!-- <template>
-    <div class="modal-backdrop">
-        <div class="modal">
-            <h2>
-                Add New Movie
-            </h2>
-            <form @submit.prevent="handleSubmit">
-                <label>
-                    Title:
-                    <input
-                        v-model="form.title"
-                        required 
-                    />
-                </label>
-
-                <label>
-                    Description:
-                    <textarea
-                        v-model="form.description"
-                        required
-                    />
-                </label>
-
-                <label>
-                    Video File:
-                    <input
-                        type="file"
-                        @change="handleFile"
-                        required
-                    />
-                </label>
-
-                <div class="modal-actions">
-                    <button
-                        type="submit"
-                    >
-                        Submit
-                    </button>
-                    <button
-                        type="button"
-                        @click="handleClose"
-                    >
-                        Cancel
-                    </button>
-                </div>
-            </form>
-        </div>
-    </div>
-</template> -->
-
 <template>
     <div class="modal-backdrop">
         <div class="modal">
@@ -91,8 +41,9 @@
                         autoplay
                         loop
                         playsinline
+                        muted
                         width="100%"
-                    ></video>
+                    />
                 </div>
 
                 <div class="modal-actions">

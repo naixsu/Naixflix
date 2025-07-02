@@ -10,13 +10,18 @@
                 &#10094;
             </button>
 
-            <div class="movie-row" ref="row">
+            <div
+                class="movie-row"
+                ref="row"
+            >
                 <MovieCard
                     v-for="(movie, i) in movies"
                     :key="i"
                     :movie="movie"
+                    :is-selected="movie.pk === selectedMovie?.pk"
                     @delete="emit('delete', movie)"
                     @edit="emit('edit', movie)"
+                    @handle-click="emit('handle-click', movie)"
                 />
             </div>
 
@@ -38,6 +43,10 @@
     defineProps({
         title: String,
         movies: Array,
+        selectedMovie: {
+            type: Object,
+            required: false,
+        },
     });
 
     const emit = defineEmits(['delete', 'edit']);

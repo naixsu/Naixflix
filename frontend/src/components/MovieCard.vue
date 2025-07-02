@@ -1,5 +1,9 @@
 <template>
-    <div class="movie-card">
+    <div
+        class="movie-card"
+        :class="{ selected: isSelected }"
+        @click="emit('handle-click')"
+    >
         <div class="actions">
             <GenericButton
                 icon="pencil"
@@ -24,12 +28,17 @@
     import { defineProps, defineEmits } from 'vue';
     import GenericButton from './GenericButton.vue';
 
-    const emit = defineEmits(['delete', 'edit']);
+    const emit = defineEmits(['delete', 'edit', 'click',]);
 
     defineProps({
         movie: {
             type: Object,
             required: true,
+        },
+
+        isSelected: {
+            type: Boolean,
+            default: false,
         },
     });
 </script>
@@ -43,6 +52,19 @@
         border-radius: 8px;
         overflow: hidden;
         flex-shrink: 0;
+    }
+
+    .movie-card:first-child {
+        margin-left: 10px;
+    }
+
+    .movie-card:last-child {
+        margin-right: 10px;
+    }
+
+    .movie-card.selected {
+        outline: 3px solid #e50914;
+        box-shadow: 0 0 10px rgba(229, 9, 20, 0.8);
     }
 
     .poster {

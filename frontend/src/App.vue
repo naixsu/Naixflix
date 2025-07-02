@@ -1,7 +1,9 @@
 <template>
     <div class="app">
-        <AppHeader
-            @add="handleAdd"
+        <AppHeader @add="handleAdd"/>
+
+        <MovieDetails
+            :movie="selectedMovie"
         />
 
         <MovieModal
@@ -15,8 +17,10 @@
             <MovieRow
                 title="Movies"
                 :movies="movies"
+                :selected-movie="selectedMovie"
                 @delete="handleDelete"
                 @edit="handleEdit"
+                @handle-click="handleMovieClick"
             />
         </main>
     </div>
@@ -29,12 +33,14 @@
     import AppHeader from './components/AppHeader.vue';
     import MovieRow from './components/MovieRow.vue';
     import MovieModal from './components/MovieModal.vue';
+    import MovieDetails from './components/MovieDetails.vue';
 
     // Data
     const isFetching = ref(false);
     const movies = ref([]);
     const showModal = ref(false);
     const editMovie = ref(null);
+    const selectedMovie = ref(null);
 
     // onMounted
     onMounted(async () => {
@@ -50,6 +56,10 @@
     function handleAdd() {
         editMovie.value = null;
         showModal.value = true;
+    }
+
+    function handleMovieClick(movie) {
+        selectedMovie.value = movie;
     }
 
     // Async functions
