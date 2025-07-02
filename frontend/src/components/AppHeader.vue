@@ -2,12 +2,11 @@
     <header class="header">
         <div class="logo">NAIXFLIX</div>
         <nav class="nav">
-            <button
+            <GenericButton
+                label="Add Movie"
                 class="add-movie-btn"
                 @click="emit('add')"
-            >
-                Add Movie
-            </button>
+            />
         </nav>
     </header>
 
@@ -15,16 +14,17 @@
 
 <script setup>
     import { defineEmits } from 'vue';
+    import GenericButton from './GenericButton.vue';
 
-    const emit = defineEmits(['close', 'submit', 'add']);
+    const emit = defineEmits(['add']);
 </script>
 
 
 <style scoped>
     .header {
         display: flex;
-        align-items: center;
         justify-content: space-between;
+        align-items: center;
         padding: 1rem 2rem;
         background-color: #000;
     }

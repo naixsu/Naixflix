@@ -7,19 +7,24 @@
         <div class="actions">
             <GenericButton
                 icon="pencil"
-                size="small"
+                size="medium"
                 class="icon-btn left"
                 @click="emit('edit')"
             />
             <GenericButton
                 icon="trash-can"
-                size="small"
+                size="medium"
                 class="icon-btn right"
                 @click="emit('delete')"
             />
         </div>
         <div class="poster">
-            {{ movie.title }}
+            <div class="movie-title">
+                {{ movie.title || 'Untitled Movie' }}
+            </div>
+            <div class="movie-date">
+                {{ movie.date_added || 'Date unknown' }}
+            </div>
         </div>
     </div>
 </template>
@@ -74,10 +79,20 @@
         display: grid;
         place-items: center;
         color: white;
-        font-weight: bold;
-        font-size: 1.2rem;
         text-align: center;
         padding: 0.5rem;
+        font-size: 1rem;
+    }
+
+    .movie-title {
+        font-weight: bold;
+        font-size: 1.1rem;
+        margin-bottom: 0.3rem;
+    }
+
+    .movie-date {
+        font-size: 0.85rem;
+        color: #ddd;
     }
 
     .actions {

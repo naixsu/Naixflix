@@ -62,6 +62,20 @@
         selectedMovie.value = movie;
     }
 
+    function handleUpdateSelectedMovie() {
+        if (!selectedMovie.value) {
+            return;
+        }
+
+        const updated = movies.value.find(movie =>
+            movie.pk === selectedMovie.value.pk
+        )
+
+        if (updated) {
+            selectedMovie.value = updated;
+        }
+    }
+
     // Async functions
     async function fetchMovies() {
         isFetching.value = true;
@@ -69,6 +83,7 @@
         try {
             const response = await axios.get("http://localhost:8000/api/movies");
             movies.value = response.data;
+            handleUpdateSelectedMovie()
         } catch (error) {
             console.error('Error fetching movies:', error);
         } finally {
@@ -116,7 +131,19 @@
         } catch (error) {
             console.error(`Failed to delete movie ${movie.pk}`, error);
         } finally {
+            const index = movies.value.findIndex(movie => movie.pk === movie.pk)
             await fetchMovies();
+
+            // Switch `selectedMovie` to an available one
+            if (selectedMovie.value?.pk === movie.pk) {
+                if (index > 0) {
+                    selectedMovie.value = movies.value[index - 1]
+                } else if (movies.value.length > 0) {
+                    selectedMovie.value = movies.value[0]
+                } else {
+                    selectedMovie.value = null
+                }
+            }
         }
     }
 </script>
