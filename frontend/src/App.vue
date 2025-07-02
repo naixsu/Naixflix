@@ -1,7 +1,14 @@
 <template>
     <div class="app">
         <AppHeader
-            @add-new-movie="handleAddNewMovie"
+            @add="handleAdd"
+        />
+
+        <MovieModal
+            v-if="showModal"
+            :movie="editMovie"
+            @close="showModal = false"
+            @submit="handleSubmit"
         />
 
         <main class="main">
@@ -9,6 +16,7 @@
                 title="Movies"
                 :movies="movies"
                 @delete="handleDelete"
+                @edit="handleEdit"
             />
         </main>
     </div>
@@ -20,15 +28,29 @@
     import { ref, onMounted } from 'vue';
     import AppHeader from './components/AppHeader.vue';
     import MovieRow from './components/MovieRow.vue';
+    import MovieModal from './components/MovieModal.vue';
 
     // Data
     const isFetching = ref(false);
     const movies = ref([]);
+    const showModal = ref(false);
+    const editMovie = ref(null);
 
     // onMounted
     onMounted(async () => {
         fetchMovies();
     })
+
+    // Functions
+    function handleEdit(movie) {
+        editMovie.value = movie;
+        showModal.value = true;
+    }
+
+    function handleAdd() {
+        editMovie.value = null;
+        showModal.value = true;
+    }
 
     // Async functions
     async function fetchMovies() {
@@ -44,26 +66,39 @@
         }
     }
 
-    async function handleAddNewMovie(data) {
+    async function handleSubmit(data) {
         try {
             const formData = new FormData();
             formData.append('title', data.title);
             formData.append('description', data.description);
-            formData.append('video_file', data.video_file); // file object
 
-            await axios.post('http://localhost:8000/api/movies/', formData, {
+            // Only include video_file if a new one is provided
+            if (data.video_file instanceof File) {
+                formData.append('video_file', data.video_file);
+            }
+
+            const config = {
                 headers: {
                     'Content-Type': 'multipart/form-data',
                 },
-            });
+            };
+
+            if (data.pk) {
+                // PATCH to update existing movie
+                await axios.patch(`http://localhost:8000/api/movies/${data.pk}/`, formData, config);
+            } else {
+                // POST to create new movie
+                await axios.post('http://localhost:8000/api/movies/', formData, config);
+            }
         } catch (error) {
-            console.error('Failed to add new movie:', error.response?.data || error.message);
+            console.error('Failed to save movie:', error.response?.data || error.message);
         } finally {
             await fetchMovies();
         }
     }
 
     async function handleDelete(movie) {
+        // Note that a HARD DELETE is not implemented here
         try {
             await axios.patch(`http://localhost:8000/api/movies/${movie.pk}/`, {
                 is_removed: true,

@@ -4,40 +4,19 @@
         <nav class="nav">
             <button
                 class="add-movie-btn"
-                @click="handleAddButton"
+                @click="emit('add')"
             >
                 Add Movie
             </button>
         </nav>
     </header>
 
-    <AddMovieModal
-        v-if="showModal"
-        @close="handleCloseMovie"
-        @submit="handleAddNewMovie"
-    />
-
 </template>
 
 <script setup>
-    import { ref, defineEmits } from 'vue';
-    import AddMovieModal from './AddMovieModal.vue';
+    import { defineEmits } from 'vue';
 
-    const emit = defineEmits(['close', 'submit']);
-    const showModal = ref(false)
-
-    function handleAddButton() {
-        showModal.value = true;
-    }
-
-    function handleCloseMovie() {
-        showModal.value = false;
-    }
-
-    function handleAddNewMovie(data) {
-        emit('add-new-movie', data);
-    }
-
+    const emit = defineEmits(['close', 'submit', 'add']);
 </script>
 
 

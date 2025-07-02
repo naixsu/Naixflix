@@ -16,6 +16,7 @@
                     :key="i"
                     :movie="movie"
                     @delete="emit('delete', movie)"
+                    @edit="emit('edit', movie)"
                 />
             </div>
 
@@ -39,7 +40,7 @@
         movies: Array,
     });
 
-    const emit = defineEmits(['delete']);
+    const emit = defineEmits(['delete', 'edit']);
 
     const row = ref(null);
     const showScroll = ref(false);

@@ -1,4 +1,4 @@
-<template>
+<!-- <template>
     <div class="modal-backdrop">
         <div class="modal">
             <h2>
@@ -46,18 +46,98 @@
             </form>
         </div>
     </div>
+</template> -->
+
+<template>
+    <div class="modal-backdrop">
+        <div class="modal">
+            <h2>
+                {{ movie ? 'Edit Movie' : 'Add New Movie' }}
+            </h2>
+            <form @submit.prevent="handleSubmit">
+                <label>
+                    Title:
+                    <input
+                        placeholder="Title"
+                        v-model="form.title"
+                        required 
+                    />
+                </label>
+
+                <label>
+                    Description:
+                    <textarea
+                        placeholder="Description"
+                        v-model="form.description"
+                        required 
+                    />
+                </label>
+
+                <label>
+                    Video File:
+                    <input
+                        type="file"
+                        @change="handleFile"
+                        :required="!movie"
+                        accept="video/*"
+                    />
+                </label>
+
+                <div v-if="movie?.video_file">
+                    <p>Current video:</p>
+                    <video
+                        :src="movie.video_file"
+                        controls
+                        autoplay
+                        loop
+                        playsinline
+                        width="100%"
+                    ></video>
+                </div>
+
+                <div class="modal-actions">
+                    <button type="submit">
+                        {{ movie ? 'Update' : 'Submit' }}
+                    </button>
+                    <button type="button" @click="handleClose">
+                        Cancel
+                    </button>
+                </div>
+            </form>
+        </div>
+    </div>
 </template>
 
 <script setup>
-    import { reactive, defineEmits } from 'vue';
+    import { reactive, defineEmits, defineProps, watch } from 'vue';
 
     const emit = defineEmits(['close', 'submit']);
+    const props = defineProps({
+        movie: {
+            type: Object,
+            default: null,
+        },
+    });
 
     const form = reactive({
         title: '',
         description: '',
         video_file: null,
     });
+
+    // TODO:
+    // Can't populate video files
+    watch(
+        () => props.movie,
+        (movie) => {
+            if (movie) {
+                form.title = movie.title;
+                form.description = movie.description;
+                form.video_file = null;
+            }
+        },
+        { immediate: true }
+    );
 
     const handleFile = (e) => {
         form.video_file = e.target.files[0];
@@ -68,13 +148,12 @@
     }
 
     function handleSubmit() {
-        emit('submit', { ...form });
+        emit('submit', { ...form, pk: props.movie?.pk });
         form.title = '';
         form.description = '';
-        form.video_file = '';
+        form.video_file = null;
         handleClose();
     }
-
 </script>
 
 <style scoped>
@@ -100,7 +179,7 @@
         color: #111;
     }
 
-    .modal label {
+    .modal label, p {
         display: block;
         margin-bottom: 1rem;
         font-weight: bold;

@@ -5,13 +5,13 @@
                 icon="pencil"
                 size="small"
                 class="icon-btn left"
-                @click="handleEdit"
+                @click="emit('edit')"
             />
             <GenericButton
                 icon="trash-can"
                 size="small"
                 class="icon-btn right"
-                @click="handleDelete"
+                @click="emit('delete')"
             />
         </div>
         <div class="poster">
@@ -24,7 +24,7 @@
     import { defineProps, defineEmits } from 'vue';
     import GenericButton from './GenericButton.vue';
 
-    const emit = defineEmits(['delete']);
+    const emit = defineEmits(['delete', 'edit']);
 
     defineProps({
         movie: {
@@ -32,11 +32,6 @@
             required: true,
         },
     });
-
-    function handleDelete() {
-        emit('delete');
-    }
-
 </script>
 
 <style scoped>
