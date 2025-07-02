@@ -34,6 +34,10 @@ MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
 
 
 # Application definition
+DOCUMENTED_APPS = [
+    "movies",
+]
+
 
 INSTALLED_APPS = [
     'django.contrib.admin',
@@ -43,7 +47,8 @@ INSTALLED_APPS = [
     'django.contrib.messages',
     'django.contrib.staticfiles',
     "rest_framework",
-    "movies",
+    "corsheaders",
+    *DOCUMENTED_APPS,
 ]
 
 MIDDLEWARE = [
@@ -54,6 +59,13 @@ MIDDLEWARE = [
     'django.contrib.auth.middleware.AuthenticationMiddleware',
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
+    'corsheaders.middleware.CorsMiddleware',
+    'django.middleware.common.CommonMiddleware',
+]
+
+CORS_ORIGIN_REGEX_WHITELIST = [
+    r"http://localhost:\d+$",
+    r"http://127.0.0.1:\d+$",
 ]
 
 ROOT_URLCONF = 'core.urls'

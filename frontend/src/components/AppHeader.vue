@@ -1,14 +1,45 @@
 <template>
     <header class="header">
-        <div class="logo">NETFLIX</div>
+        <div class="logo">NAIXFLIX</div>
         <nav class="nav">
-            <a href="#">Home</a>
-            <a href="#">TV Shows</a>
-            <a href="#">Movies</a>
-            <a href="#">Latest</a>
+            <button
+                class="add-movie-btn"
+                @click="handleAddButton"
+            >
+                Add Movie
+            </button>
         </nav>
     </header>
+
+    <AddMovieModal
+        v-if="showModal"
+        @close="handleCloseMovie"
+        @submit="handleAddNewMovie"
+    />
+
 </template>
+
+<script setup>
+    import { ref, defineEmits } from 'vue';
+    import AddMovieModal from './AddMovieModal.vue';
+
+    const emit = defineEmits(['close', 'submit']);
+    const showModal = ref(false)
+
+    function handleAddButton() {
+        showModal.value = true;
+    }
+
+    function handleCloseMovie() {
+        showModal.value = false;
+    }
+
+    function handleAddNewMovie(data) {
+        emit('add-new-movie', data);
+    }
+
+</script>
+
 
 <style scoped>
     .header {
@@ -25,9 +56,30 @@
         font-weight: bold;
     }
 
+    .nav {
+        display: flex;
+        align-items: center;
+    }
+
     .nav a {
         margin: 0 1rem;
         text-decoration: none;
         color: #fff;
+    }
+
+    .add-movie-btn {
+        margin-left: 1rem;
+        padding: 0.5rem 1rem;
+        background-color: #e50914;
+        color: white;
+        border: none;
+        border-radius: 4px;
+        cursor: pointer;
+        font-weight: bold;
+        transition: background 0.3s;
+    }
+
+    .add-movie-btn:hover {
+        background-color: #ff0a16;
     }
 </style>

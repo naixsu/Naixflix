@@ -1,15 +1,12 @@
-from django.urls import path
-from .views import MovieListCreateView, MovieRetrieveUpdateDeleteView
+from django.urls import path, include
+from .views import MovieViewSet
+from rest_framework.routers import DefaultRouter
 
-urlpatterns = [
-    path(
-        "movies/",
-        MovieListCreateView.as_view(),
-        name="movie-list-create",
-    ),
-    path(
-        "movies/<int:pk>/",
-        MovieRetrieveUpdateDeleteView.as_view(),
-        name="movie-detail",
-    ),
-]
+router = DefaultRouter()
+router.register(
+    r'movies',
+    MovieViewSet,
+    basename="movie"
+)
+
+urlpatterns = router.urls

@@ -1,16 +1,20 @@
 <template>
     <div class="app">
-        <AppHeader />
+        <AppHeader
+            @add-new-movie="handleAddNewMovie"
+        />
 
         <main class="main">
+            movies
+            {{ movies }}
             <MovieRow
                 title="Popular on Netflix"
                 :movies="popular"
             />
-            <MovieRow
+            <!-- <MovieRow
                 title="Trending Now"
                 :movies="trending"
-            />
+            /> -->
         </main>
     </div>
 </template>
@@ -18,9 +22,26 @@
 <script setup>
     import AppHeader from './components/AppHeader.vue';
     import MovieRow from './components/MovieRow.vue';
+    import axios from 'axios';
 
     const popular = Array.from({ length: 20 }, (_, i) => `HD ${i + 1}`);
-    const trending = Array.from({ length: 14 }, (_, i) => `HD ${i + 1}`);
+
+    async function handleAddNewMovie(data) {
+        try {
+            const formData = new FormData();
+            formData.append('title', data.title);
+            formData.append('description', data.description);
+            formData.append('video_file', data.video_file); // file object
+
+            await axios.post('http://localhost:8000/api/movies/', formData, {
+                headers: {
+                    'Content-Type': 'multipart/form-data',
+                },
+            });
+        } catch (error) {
+            console.error('Failed to add new movie:', error.response?.data || error.message);
+        }
+    }
 </script>
 
 <style scoped>
