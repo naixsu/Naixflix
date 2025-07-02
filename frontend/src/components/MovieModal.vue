@@ -76,7 +76,7 @@
         video_file: null,
     });
 
-    // TODO:
+    // NOTE:
     // Can't populate video files
     watch(
         () => props.movie,
