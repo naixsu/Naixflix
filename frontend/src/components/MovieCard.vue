@@ -1,5 +1,19 @@
 <template>
     <div class="movie-card">
+        <div class="actions">
+            <GenericButton
+                icon="pencil"
+                size="small"
+                class="icon-btn left"
+                @click="handleEdit"
+            />
+            <GenericButton
+                icon="trash-can"
+                size="small"
+                class="icon-btn right"
+                @click="handleDelete"
+            />
+        </div>
         <div class="poster">
             {{ movie.title }}
         </div>
@@ -7,7 +21,10 @@
 </template>
 
 <script setup>
-    import { defineProps } from 'vue';
+    import { defineProps, defineEmits } from 'vue';
+    import GenericButton from './GenericButton.vue';
+
+    const emit = defineEmits(['delete']);
 
     defineProps({
         movie: {
@@ -15,10 +32,16 @@
             required: true,
         },
     });
+
+    function handleDelete() {
+        emit('delete');
+    }
+
 </script>
 
 <style scoped>
     .movie-card {
+        position: relative;
         background-color: #333;
         width: 150px;
         height: 220px;
@@ -36,5 +59,34 @@
         color: white;
         font-weight: bold;
         font-size: 1.2rem;
+        text-align: center;
+        padding: 0.5rem;
+    }
+
+    .actions {
+        position: relative;
+        width: 100%;
+        height: 0;
+    }
+
+    .icon-btn {
+        position: absolute;
+        top: 0.3rem;
+        background: rgba(0, 0, 0, 0.6);
+        padding: 0.3rem;
+        border-radius: 4px;
+        color: white;
+    }
+
+    .icon-btn:hover {
+        background: rgba(255, 255, 255, 0.2);
+    }
+
+    .icon-btn.left {
+        left: 0.3rem;
+    }
+
+    .icon-btn.right {
+        right: 0.3rem;
     }
 </style>

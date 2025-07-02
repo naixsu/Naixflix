@@ -8,6 +8,7 @@
             <MovieRow
                 title="Movies"
                 :movies="movies"
+                @delete="handleDelete"
             />
         </main>
     </div>
@@ -57,6 +58,18 @@
             });
         } catch (error) {
             console.error('Failed to add new movie:', error.response?.data || error.message);
+        } finally {
+            await fetchMovies();
+        }
+    }
+
+    async function handleDelete(movie) {
+        try {
+            await axios.patch(`http://localhost:8000/api/movies/${movie.pk}/`, {
+                is_removed: true,
+            });
+        } catch (error) {
+            console.error(`Failed to delete movie ${movie.pk}`, error);
         } finally {
             await fetchMovies();
         }

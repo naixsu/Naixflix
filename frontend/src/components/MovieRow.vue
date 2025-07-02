@@ -15,6 +15,7 @@
                     v-for="(movie, i) in movies"
                     :key="i"
                     :movie="movie"
+                    @delete="emit('delete', movie)"
                 />
             </div>
 
@@ -30,13 +31,15 @@
 </template>
 
 <script setup>
-    import { ref, defineProps, onMounted, onUpdated } from 'vue';
+    import { ref, defineProps, onMounted, onUpdated, defineEmits } from 'vue';
     import MovieCard from './MovieCard.vue';
 
     defineProps({
         title: String,
         movies: Array,
     });
+
+    const emit = defineEmits(['delete']);
 
     const row = ref(null);
     const showScroll = ref(false);
