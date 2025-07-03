@@ -30,8 +30,8 @@ Naixflix is a full-stack movie management application that allows users to uploa
 - API Endpoints:
   - `GET /movies/` — List all **non-deleted** movies
   - `POST /movies/` — Create a new movie with a video file
-  - `PATCH /movies/<id>/` — Update movie fields (title, description, video file, etc.)
-  - `PATCH /movies/<id>/` — Soft delete a movie by setting `is_removed: true`
+  - `PATCH /movies/<pk>/` — Update movie fields (title, description, video file, etc.)
+  - `PATCH /movies/<pk>/` — Soft delete a movie by setting `is_removed: true`
 
 > ⚠️ **Note:** The app uses `PATCH` exclusively for updates and soft-deletes.  
 > `PUT` is not used, as it requires all fields including the video file, which isn't practical for partial edits.
